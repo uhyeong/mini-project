@@ -9,3 +9,5 @@ google-generativeai
 openai
 django-environ
 psycopg2-binary
+sshtunnel
+paramiko
