@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - SKN10</title>
+    {% load static %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/register.css">
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <div class="bg-slate-800 rounded-lg shadow-xl p-8 form-fade-in">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold gradient-text mb-2">Create Account</h1>
+                <p class="text-slate-400">Join our community today</p>
+            </div>
+
+            <form id="signupForm" method="POST" action="{% url 'account:register' %}" class="space-y-4">
+                {% csrf_token %}
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-slate-300 mb-2">Username</label>
+                        <div class="relative input-field-wrapper">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" id="username" name="username" 
+                                   class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                                   placeholder="Choose a username">
+                        </div>
+                        <div id="usernameError" class="error-message hidden"></div>
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-slate-300 mb-2">Email</label>
+                        <div class="relative input-field-wrapper">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="email" name="email" 
+                                   class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                                   placeholder="Enter your email">
+                        </div>
+                        <div id="emailError" class="error-message hidden"></div>
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                        <div class="relative input-field-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="password" name="password" 
+                                   class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                                   placeholder="Create a password">
+                            <span id="passwordToggle" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        <div id="passwordError" class="error-message hidden"></div>
+                        
+                        <!-- Password Strength Indicator -->
+                        <div class="mt-2">
+                            <div class="password-strength-bar-container">
+                                <div id="passwordStrengthBar" class="password-strength-bar" style="width: 0%"></div>
+                            </div>
+                            <div class="flex justify-between items-center mt-1">
+                                <span id="passwordStrengthText" class="text-sm"></span>
+                                <ul id="passwordFeedbackList" class="text-sm text-slate-400"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium text-slate-300 mb-2">Confirm Password</label>
+                        <div class="relative input-field-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="confirmPassword" name="confirmPassword" 
+                                   class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                                   placeholder="Confirm your password">
+                            <span id="confirmPasswordToggle" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        <div id="confirmPasswordError" class="error-message hidden"></div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Gender</label>
+                        <div class="flex space-x-4">
+                            <div class="custom-radio">
+                                <input type="radio" id="male" name="gender" value="male">
+                                <label for="male">Male</label>
+                            </div>
+                            <div class="custom-radio">
+                                <input type="radio" id="female" name="gender" value="female">
+                                <label for="female">Female</label>
+                            </div>
+                        </div>
+                        <div id="genderError" class="error-message hidden"></div>
+                    </div>
+                </div>
+
+                <button type="submit" 
+                        class="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800 transition-colors">
+                    Create Account
+                </button>
+            </form>
+
+            <p class="mt-8 text-center text-sm text-slate-400">
+                Already have an account? 
+                <a href="{% url 'account:login' %}" class="font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
+                    Sign in
+                </a>
+            </p>
+        </div>
+    </div>
+    <script src="{% static 'js/register.js' %}"></script>
+</body>
+</html>

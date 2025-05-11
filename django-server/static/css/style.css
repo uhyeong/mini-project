@@ -1,0 +1,122 @@
+body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden; /* Prevent body scroll, individual panes will scroll */
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #171717; /* A bit darker than bg-gray-900 */
+}
+::-webkit-scrollbar-thumb {
+    background: #404040; /* gray-700 */
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #525252; /* gray-600 */
+}
+
+/* Message Animation */
+.chat-message-item {
+    opacity: 0;
+    transform: translateY(15px);
+    animation: fadeInMessage 0.3s ease-out forwards;
+}
+@keyframes fadeInMessage {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Sidebar transition */
+#sidebar {
+    transition: width 0.3s ease-in-out, padding 0.3s ease-in-out;
+}
+#sidebar.collapsed {
+    width: 70px; /* Adjust as needed */
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+#sidebar.collapsed .sidebar-text {
+    display: none;
+}
+#sidebar.collapsed .sidebar-item-content { /* This targets the span inside chat history items and footer items */
+    justify-content: center;
+}
+#sidebar.collapsed #newChatBtn .fa-pen-to-square {
+    display: none;
+}
+#sidebar.collapsed #newChatBtn .fa-plus {
+    margin-right: 0;
+}
+/* Ensure delete button is visible on hover even when sidebar text is hidden due to collapse */
+#sidebar.collapsed .chat-history-item:hover .delete-chat-btn {
+    opacity: 1;
+}
+#sidebar.collapsed .chat-history-item .delete-chat-btn {
+    /* If text is hidden, delete button might need slight position adjustment or simply rely on hover */
+}
+
+
+/* Suggestion Cards (Style kept for potential future use, but cards are removed in HTML) */
+.suggestion-card {
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.suggestion-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+/* Typing indicator */
+.typing-indicator-dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: #9ca3af; /* gray-400 */
+    border-radius: 50%;
+    display: inline-block;
+    animation: typing-bounce 1.4s infinite ease-in-out both;
+}
+.typing-indicator-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-indicator-dot:nth-child(2) { animation-delay: -0.16s; }
+@keyframes typing-bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1.0); }
+}
+
+/* Textarea focus */
+#chatInput:focus-within {
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5); /* indigo-500 with opacity */
+}
+
+/* Markdown-like code block styling */
+.message-content pre {
+    background-color: #111827; /* gray-900 */
+    color: #d1d5db; /* gray-300 */
+    padding: 1em;
+    border-radius: 0.5em;
+    overflow-x: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+.message-content code:not(pre code) {
+    background-color: #374151; /* gray-700 */
+    color: #e5e7eb; /* gray-200 */
+    padding: 0.2em 0.4em;
+    border-radius: 0.3em;
+    font-size: 0.85em;
+}
+.message-content ul, .message-content ol {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.message-content li {
+    margin-bottom: 0.25rem;
+}

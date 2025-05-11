@@ -1,0 +1,10 @@
+
+.venv
+.env
+__pycache__
+.env
+.venv
+__pycache__
+database/
+migrations/
+skn10-4th-3team-pem.pem

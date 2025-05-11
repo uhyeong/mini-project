@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    {% load static %}
+    <title>Counsltation Chatbot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    window.isUserLoggedIn = "{{ is_authenticated|yesno:'true,false' }}";
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+</head>
+<body class="bg-gray-800 text-gray-100 flex h-screen">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="bg-gray-900 w-72 p-4 flex flex-col space-y-3">
+        <!-- New Chat Button -->
+        <button id="newChatBtn" class="w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-700/60 transition-colors duration-150 text-sm border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <span class="flex items-center sidebar-item-content"> <!-- sidebar-item-content for consistency with collapse logic -->
+                <i class="fas fa-plus mr-2"></i>
+                <span class="sidebar-text">New Chat</span>
+            </span>
+            <i class="fas fa-pen-to-square sidebar-text"></i> <!-- sidebar-text to hide icon when collapsed -->
+        </button>
+
+        <!-- Chat History (Scrollable) -->
+        <div class="flex-grow overflow-y-auto space-y-1.5 pr-1 -mr-1 custom-scrollbar">
+            <div id="chatHistoryContainer">
+            </div>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="border-t border-gray-700 pt-3 space-y-1.5">
+            <!-- "My Account" and "Settings" removed -->
+            <button id="toggleSidebarBtn" class="w-full flex items-center p-2.5 rounded-md hover:bg-gray-700/50 transition-colors duration-150 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 sidebar-item-content">
+                <i id="sidebarToggleIcon" class="fas fa-angles-left mr-2.5"></i> <span class="sidebar-text">Collapse</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="flex-1 flex flex-col bg-gray-800 h-screen">
+        <!-- Header (Optional, for model name or mobile menu) -->
+        <header class="p-3 border-b border-gray-700/70 flex items-center justify-between sticky top-0 bg-gray-800 z-10">
+            <!-- 왼쪽: 빈 공간 또는 메뉴 버튼 -->
+            <div class="w-8 md:hidden"></div>
+
+            <!-- 가운데: 타이틀 -->
+            <h1 class="text-lg font-semibold text-center flex-1">
+                Consultation <span class="text-indigo-400">Chatbot</span>
+            </h1>
+            
+            <!-- 오른쪽: 로그인/로그아웃 -->
+            <div class="flex items-center space-x-4">
+                {% if is_authenticated %}
+                <span class="text-white text-sm font-medium">
+                    {{ username }}
+                </span>
+                <form id="logoutForm" method="post" action="{% url 'account:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit"
+                        class="bg-red-500 hover:bg-red-600 text-white py-1.5 px-3 rounded-md text-sm font-medium">
+                        Sign out
+                    </button>
+                </form>
+                {% else %}
+                <a href="{% url 'account:login' %}"
+                    class="bg-indigo-500 hover:bg-indigo-600 text-white py-1.5 px-3 rounded-md text-sm font-medium">
+                    Sign in
+                </a>
+                {% endif %}
+            </div>
+        </header>
+
+        <!-- Chat Messages Area -->
+        <div id="chatLog" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 custom-scrollbar">
+            <!-- Initial Welcome/Suggestions -->
+            <div id="initialScreen" class="flex flex-col items-center justify-center h-full text-center">
+                <div class="relative mb-6">
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full blur-xl opacity-50"></div>
+                    <div class="relative bg-gray-700 p-5 rounded-full shadow-xl">
+                        <i class="fas fa-brain text-5xl text-indigo-300"></i>
+                    </div>
+                </div>
+                <h2 class="text-3xl font-bold mb-2">How can I help you?</h2>
+                <p class="text-gray-400 mb-8 max-w-md">
+                    Ask me anything.
+                </p>
+                <!-- Suggestion boxes removed -->
+            </div>
+            <!-- Messages will be appended here -->
+        </div>
+
+        <!-- Message Input Area -->
+        <div class="bg-gray-800 p-3 md:p-4 border-t border-gray-700/70">
+            <div class="max-w-3xl mx-auto">
+                <div id="chatInputWrapper" class="flex items-end bg-gray-700/80 rounded-xl p-1.5 shadow-md focus-within:ring-2 focus-within:ring-indigo-500/70 transition-all duration-150">
+                    <textarea id="chatInput"
+                                class="flex-1 bg-transparent p-2.5 text-gray-100 placeholder-gray-400 focus:outline-none resize-none overflow-y-hidden"
+                                placeholder="Send a message..."
+                                rows="1"></textarea>
+                    <button id="sendMessageBtn"
+                            class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-150 ml-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <p class="text-xs text-gray-500 text-center mt-2 px-2">
+                    AI can make mistakes. Verify important information. This is a demo interface.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    
+<script src="{% static 'js/script2.js' %}"></script>
+</body>
+</html>

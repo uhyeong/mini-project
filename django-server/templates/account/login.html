@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SKN10</title>
+    {% load static %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <div class="bg-slate-800 rounded-lg shadow-xl p-8 form-fade-in">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold gradient-text mb-2">Welcome Back!</h1>
+                <p class="text-slate-400">Please sign in to your account</p>
+            </div>
+
+            <form id="loginForm" method="POST" action="{% url 'account:login' %}" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="loginCredential" class="block text-sm font-medium text-slate-300 mb-2">Username or Email</label>
+                        <div class="relative input-field-wrapper">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" id="loginCredential" name="credential" 
+                                   class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                                   placeholder="Enter your username or email">
+                        </div>
+                        <div id="loginCredentialError" class="error-message hidden"></div>
+                    </div>
+
+                    <div>
+                        <label for="loginPassword" class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                        <div class="relative input-field-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="loginPassword" name="password" 
+                                   class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                                   placeholder="Enter your password">
+                            <span id="loginPasswordToggle" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        <div id="loginPasswordError" class="error-message hidden"></div>
+                    </div>
+                </div>
+
+                <button type="submit" 
+                        class="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800 transition-colors">
+                    Sign In
+                </button>
+            </form>
+
+            <p class="mt-8 text-center text-sm text-slate-400">
+                Don't have an account? 
+                <a href="{% url 'account:register' %}" class="font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
+                    Sign up
+                </a>
+            </p>
+        </div>
+    </div>
+    <script src="{% static 'js/login_ver2.js' %}"></script>
+</body>
+</html>
