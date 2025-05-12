@@ -46,8 +46,8 @@ def chat_api(request):
         Message.objects.create(text=message, sender='user', session_id=session)
 
     # 여기서 실제 OpenAI 처리
-    #response = chat_with_philosophy(message)
-    response = message
+    response = chat_with_philosophy(message)
+    #response = message
 
     if session_id:
         Message.objects.create(text=response, sender='bot', session_id=session)
