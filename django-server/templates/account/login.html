@@ -18,7 +18,7 @@
                 <p class="text-slate-400">Please sign in to your account</p>
             </div>
 
-            <form id="loginForm" method="POST" action="{% url 'account:login' %}" class="space-y-6">
+            <form id="loginForm" method="POST" action="" class="space-y-6">
                 {% csrf_token %}
                 
                 <div class="space-y-4">
@@ -63,5 +63,6 @@
         </div>
     </div>
     <script src="{% static 'js/login_ver2.js' %}"></script>
+    <script src="{% static 'js/login_event.js' %}"></script>
 </body>
 </html>

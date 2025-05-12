@@ -102,7 +102,15 @@ async function renderSidebarSessions() {
     sessions.forEach(session => {
         const item = document.createElement("a");
         item.href = "#";
-        item.className = "chat-history-item group flex items-center justify-between p-2.5 rounded-md hover:bg-gray-700/50 transition-colors duration-150 text-sm";
+        let classList = "chat-history-item group flex items-center justify-between p-2.5 rounded-md transition-colors duration-150 text-sm";
+        // 현재 활성화된 세션이면 진하게
+        if (session.id === activeSessionId) {
+            classList += " bg-gray-700 font-semibold";  // 강조
+        } else {
+            classList += " hover:bg-gray-700/50";  // 일반 hover 효과
+        }
+        
+        item.className = classList;
         item.dataset.sessionId = session.id;
 
         const span = document.createElement("span");
@@ -122,6 +130,7 @@ async function renderSidebarSessions() {
 
         item.onclick = () => {
             activeSessionId = session.id;
+            renderSidebarSessions();
             loadSessionMessages(session.id);
         }
 
@@ -367,10 +376,7 @@ chatInput.addEventListener('keypress', (event) => {
 });
 
 newChatBtn.addEventListener('click', async () => {
-    const session = await createSession();
-    activeSessionId = session.id;
-    await renderSidebarSessions();
-    loadSessionMessages(session.id);
+    location.reload();
 });
 
 toggleSidebarBtn.addEventListener('click', toggleSidebar);
