@@ -1,17 +1,3 @@
-# from django.shortcuts import render, redirect
-
-# def login_view(request):
-#     if request.method == 'POST':
-#         # 로그인 처리 로직
-#         return render(request, 'chatbot/chatbot.html')
-#     return render(request, 'account/login.html')    
-
-# def register_view(request):
-#     if request.method == 'POST':
-#         # 회원가입 처리 로직
-#         return redirect('account:login')  # 로그인 페이지로 리다이렉트
-#     return render(request, 'account/register.html')
-
 from rest_framework.authentication import get_authorization_header
 from rest_framework.views import APIView 
 from rest_framework.response import Response
@@ -38,12 +24,11 @@ class RegisterView(APIView):
     def post(self, request):
         username = request.data['username']
         if CustomUser.objects.filter(username=username).exists():
-            raise APIException('이미 존재하는 유저입니다.')
+            return Response({'detail': '이미 존재하는 유저입니다.'}, status=400)
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        response = Response(serializer.data, status=status.HTTP_201_CREATED)
-        return response
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # 로그인
 class LoginView(APIView):

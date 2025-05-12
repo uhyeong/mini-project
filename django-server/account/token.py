@@ -5,9 +5,8 @@ import enum
 from rest_framework.exceptions import AuthenticationFailed
 
 class JWT_KEY(enum.Enum):
-    RANDOM_OF_ACCESS_KEY = (enum.auto(), 'access_secret', datetime.timedelta(seconds=120), 'HS256', '랜덤한 조합의 키')
+    RANDOM_OF_ACCESS_KEY = (enum.auto(), 'access_secret', datetime.timedelta(seconds=600), 'HS256', '랜덤한 조합의 키')
     RANDOM_OF_REFRESH_KEY = (enum.auto(), 'refresh_secret', datetime.timedelta(days=2), 'HS256', '랜덤한 조합의 키')
-
 
 def __create_token(id:int, key:JWT_KEY) -> str:
     payload = {
